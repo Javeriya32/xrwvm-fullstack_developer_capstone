@@ -24,12 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8
 
-      - name: Print working directory
-        run: pwd
-
       - name: Run Linter
         run: |
-          find . -name "*.py" -exec flake8 {} +
+          # Ignore long-line errors (E501) as allowed in IBM lab
+          find . -name "*.py" -exec flake8 --ignore=E501 {} +
           echo "Linted all the python files successfully"
 
   lint_js:
@@ -49,5 +47,6 @@ jobs:
 
       - name: Run Linter
         run: |
-          find ./server/database -name "*.js" -exec jshint {} +
+          # Force ES8 support for modern JS syntax
+          find ./server/database -name "*.js" -exec jshint --esversion=8 {} +
           echo "Linted all the js files successfully"
